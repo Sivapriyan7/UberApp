@@ -10,20 +10,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
+//@RequiredArgsConstructor
 public class RiderServiceImpl implements RiderService {
 
     private final ModelMapper modelMapper;
+    public RiderServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+    private static final Logger log = LoggerFactory.getLogger(RiderServiceImpl.class);
+
 
     @Override
     public RideRequestDTO requestRide(RideRequestDTO rideRequestDTO) {
         RideRequest rideRequest = modelMapper.map(rideRequestDTO, RideRequest.class);
-//        log.info(rideRequest.toString());
+        log.info(rideRequest.toString());
 
         return null;
     }
