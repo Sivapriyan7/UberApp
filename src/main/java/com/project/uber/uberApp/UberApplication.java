@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UberApplication {
 
 	public static void main(String[] args) {
+		System.out.println("starting application");
 		SpringApplication.run(UberApplication.class, args);
 	}
 

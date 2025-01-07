@@ -29,7 +29,6 @@ public class RiderServiceImpl implements RiderService {
     public RideRequestDTO requestRide(RideRequestDTO rideRequestDTO) {
         RideRequest rideRequest = modelMapper.map(rideRequestDTO, RideRequest.class);
         log.info(rideRequest.toString());
-
         return null;
     }
 
