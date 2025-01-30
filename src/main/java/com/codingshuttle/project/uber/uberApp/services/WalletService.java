@@ -5,7 +5,7 @@ import com.codingshuttle.project.uber.uberApp.entities.Wallet;
 
 public interface WalletService {
 
-    Wallet addMoneyToWallet(Long userId, Double amount);
+    Wallet addMoneyToWallet(User user, Double amount);
 
     void WithdrawAllMyMoneyFromWallet();
 
