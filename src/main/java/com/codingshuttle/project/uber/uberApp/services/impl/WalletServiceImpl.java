@@ -1,9 +1,5 @@
 package com.codingshuttle.project.uber.uberApp.services.impl;
 
-import ch.qos.logback.core.recovery.ResilientOutputStreamBase;
-import com.codingshuttle.project.uber.uberApp.dto.RideDto;
-import com.codingshuttle.project.uber.uberApp.dto.WalletDto;
-import com.codingshuttle.project.uber.uberApp.dto.WalletTransactionDto;
 import com.codingshuttle.project.uber.uberApp.entities.Ride;
 import com.codingshuttle.project.uber.uberApp.entities.User;
 import com.codingshuttle.project.uber.uberApp.entities.Wallet;
@@ -59,9 +55,11 @@ public class WalletServiceImpl implements WalletService {
                 .transactionMethod(transactionMethod)
                 .amount(amount)
                 .build();
-        walletTransactionService.createNewWalletTransaction(walletTransaction);
-        return walletRepository.save(wallet);
 
+        //walletTransactionService.createNewWalletTransaction(walletTransaction);
+        wallet.getTransactions().add(walletTransaction);
+
+        return walletRepository.save(wallet);
     }
 
     @Override

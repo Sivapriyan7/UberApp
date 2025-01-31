@@ -3,6 +3,7 @@ package com.codingshuttle.project.uber.uberApp.services;
 import com.codingshuttle.project.uber.uberApp.entities.Payment;
 import com.codingshuttle.project.uber.uberApp.entities.Ride;
 import com.codingshuttle.project.uber.uberApp.entities.enums.PaymentStatus;
+import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.codingshuttle.project.uber.uberApp.repositories.PaymentRepository;
 import com.codingshuttle.project.uber.uberApp.strategies.PaymentStrategyManager;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,9 @@ public class PaymentServiceImpl implements PaymentService{
     private final PaymentStrategyManager paymentStrategyManager;
 
     @Override
-    public void processPayment(Payment payment) {
+    public void processPayment(Ride ride) {
+        Payment payment = paymentRepository.findByRide(ride)
+                .orElseThrow(()-> new ResourceNotFoundException("Payment not found for ride : "+ride.getId()));
         paymentStrategyManager.paymentStrategy(payment.getPaymentMethod()).processPayment(payment);
     }
 
