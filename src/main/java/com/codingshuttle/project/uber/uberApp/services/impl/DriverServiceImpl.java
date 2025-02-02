@@ -10,10 +10,7 @@ import com.codingshuttle.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.codingshuttle.project.uber.uberApp.entities.enums.RideStatus;
 import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.codingshuttle.project.uber.uberApp.repositories.DriverRepository;
-import com.codingshuttle.project.uber.uberApp.services.DriverService;
-import com.codingshuttle.project.uber.uberApp.services.PaymentService;
-import com.codingshuttle.project.uber.uberApp.services.RideRequestService;
-import com.codingshuttle.project.uber.uberApp.services.RideService;
+import com.codingshuttle.project.uber.uberApp.services.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.event.internal.DefaultResolveNaturalIdEventListener;
 import org.modelmapper.ModelMapper;
@@ -36,6 +33,7 @@ public class DriverServiceImpl implements DriverService {
     private final RideService rideService;
     private final ModelMapper modelMapper;
     private final PaymentService paymentService;
+    private final RatingService ratingService;
 
     @Override
     @Transactional
@@ -122,13 +120,25 @@ public class DriverServiceImpl implements DriverService {
         updateDriverAvailabilty(driver, true);
 
         paymentService.processPayment(ride);
+        ratingService.createNewRating(ride);
 
         return modelMapper.map(savedRide, RideDto.class);
     }
 
     @Override
     public RiderDto rateRider(Long rideId, Integer rating) {
-        return null;
+        Ride ride = rideService.getRideById(rideId);
+        Driver driver = getCurrentDriver();
+
+        if(!driver.equals(ride.getDriver())){
+            throw new RuntimeException("Driver is not the owner of the Ride");
+        }
+
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Ride status is not ENDED hence cannot rate Rider, status "+ride.getRideStatus());
+        }
+
+        return ratingService.rateRider(ride, rating);
     }
 
     @Override

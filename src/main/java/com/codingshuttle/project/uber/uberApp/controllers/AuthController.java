@@ -26,7 +26,6 @@ public class AuthController {
     @PostMapping("/onBoardNewDriver/")
     ResponseEntity<DriverDto> onBoardNewDriver(@PathVariable Long userId, @RequestBody OnboardDriverDto onboardDriverDto)
     {
-
         return new ResponseEntity<>(authService.onboardNewDriver(userId,
                 onboardDriverDto.getVehicleId()),HttpStatus.CREATED);
 
