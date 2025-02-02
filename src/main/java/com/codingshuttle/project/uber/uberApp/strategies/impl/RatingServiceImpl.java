@@ -7,6 +7,7 @@ import com.codingshuttle.project.uber.uberApp.entities.Rating;
 import com.codingshuttle.project.uber.uberApp.entities.Ride;
 import com.codingshuttle.project.uber.uberApp.entities.Rider;
 import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundException;
+import com.codingshuttle.project.uber.uberApp.exceptions.RuntimeConflictException;
 import com.codingshuttle.project.uber.uberApp.repositories.DriverRepository;
 import com.codingshuttle.project.uber.uberApp.repositories.RatingRepository;
 import com.codingshuttle.project.uber.uberApp.repositories.RiderRepository;
@@ -31,6 +32,10 @@ public class RatingServiceImpl implements RatingService {
         Driver driver = ride.getDriver();
         Rating ratingObj = ratingRepository.findByRide(ride).orElseThrow(() ->
                 new ResourceNotFoundException("Rating not found for ride with id : "+ride.getId()));
+
+        if(ratingObj.getDriverRating() != null)
+            throw new RuntimeConflictException("Driver has already been rated, cannot rate again");
+
         ratingObj.setDriverRating(rating);
 
         ratingRepository.save(ratingObj);
@@ -50,13 +55,17 @@ public class RatingServiceImpl implements RatingService {
         Rider rider = ride.getRider();
         Rating ratingObj = ratingRepository.findByRide(ride).orElseThrow(() ->
                 new ResourceNotFoundException("Rating not found for ride with id : "+ride.getId()));
+
+        if(ratingObj.getRiderRating() != null)
+            throw new RuntimeConflictException("Rider has already been rated, cannot rate again");
+
         ratingObj.setRiderRating(rating);
 
         ratingRepository.save(ratingObj);
 
         Double newRating = ratingRepository.findByRider(rider)
                 .stream()
-                .mapToDouble(Rating::getDriverRating)
+                .mapToDouble(Rating::getRiderRating)
                 .average().orElse(0.0);
         rider.setRating(newRating);
 
