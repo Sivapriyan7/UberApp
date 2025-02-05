@@ -1,9 +1,6 @@
 package com.codingshuttle.project.uber.uberApp.controllers;
 
-import com.codingshuttle.project.uber.uberApp.dto.DriverDto;
-import com.codingshuttle.project.uber.uberApp.dto.OnboardDriverDto;
-import com.codingshuttle.project.uber.uberApp.dto.SignupDto;
-import com.codingshuttle.project.uber.uberApp.dto.UserDto;
+import com.codingshuttle.project.uber.uberApp.dto.*;
 import com.codingshuttle.project.uber.uberApp.entities.User;
 import com.codingshuttle.project.uber.uberApp.services.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +25,12 @@ public class AuthController {
     {
         return new ResponseEntity<>(authService.onboardNewDriver(userId,
                 onboardDriverDto.getVehicleId()),HttpStatus.CREATED);
-
     }
 
+    @PostMapping("/login")
+    ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto){
+        String tokens[] = authService.login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
 
+        return ResponseEntity.ok(new LoginResponseDto(tokens[0]));
+    }
 }
