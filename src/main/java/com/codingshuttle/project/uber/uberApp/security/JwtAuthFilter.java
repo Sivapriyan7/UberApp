@@ -14,13 +14,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
-public class JwtAuthFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final UserService userService;
