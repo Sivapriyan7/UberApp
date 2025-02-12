@@ -1,6 +1,7 @@
 package com.codingshuttle.project.uber.uberApp.services.impl;
 
 import com.codingshuttle.project.uber.uberApp.dto.DriverDto;
+import com.codingshuttle.project.uber.uberApp.dto.LoginResponseDto;
 import com.codingshuttle.project.uber.uberApp.dto.SignupDto;
 import com.codingshuttle.project.uber.uberApp.dto.UserDto;
 import com.codingshuttle.project.uber.uberApp.entities.Driver;
@@ -10,10 +11,7 @@ import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundExcepti
 import com.codingshuttle.project.uber.uberApp.exceptions.RuntimeConflictException;
 import com.codingshuttle.project.uber.uberApp.repositories.UserRepository;
 import com.codingshuttle.project.uber.uberApp.security.JWTService;
-import com.codingshuttle.project.uber.uberApp.services.AuthService;
-import com.codingshuttle.project.uber.uberApp.services.DriverService;
-import com.codingshuttle.project.uber.uberApp.services.RiderService;
-import com.codingshuttle.project.uber.uberApp.services.WalletService;
+import com.codingshuttle.project.uber.uberApp.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
@@ -91,4 +89,14 @@ public class AuthServiceImpl implements AuthService {
         Driver savedDriver = driverService.createNewDriver(createdDriver);
         return modelMapper.map(savedDriver, DriverDto.class);
     }
+
+    @Override
+    public String refreshToken(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found with id "+userId));
+
+        return jwtService.generateAccessToken(user);
+    }
+
+
 }
