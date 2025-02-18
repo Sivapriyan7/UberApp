@@ -29,5 +29,5 @@ class UberAppApplcationTests{
                 "Testing email",
                 "body of the mail");
     }
-
+ 
 }

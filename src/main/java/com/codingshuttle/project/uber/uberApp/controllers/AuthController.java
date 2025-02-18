@@ -46,7 +46,7 @@ public class AuthController {
         //GETTING ACCESS TOKEN AND REFRESH TOKEN BY LOGGING IN THE USER
         String tokens[] = authService.login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
 
-        //CREATING COOKIE WITH THE REFRESH TOKEN
+        //ADDING REFRESH TOKEN IN THE COOKIE
         Cookie cookie  = new Cookie("token",tokens[1]);
         cookie.setHttpOnly(true);
 
@@ -55,6 +55,8 @@ public class AuthController {
 
         return ResponseEntity.ok(new LoginResponseDto(tokens[0]));
     }
+    
+    
 
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponseDto> refresh(HttpServletRequest request)
@@ -71,4 +73,17 @@ public class AuthController {
 
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        // Clearing the refresh-token cookie
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // Setting maxAge to 0 to remove the cookie
+
+        // Adding the cleared cookie to the response
+        response.addCookie(cookie);
+
+        return ResponseEntity.noContent().build();
+    }
 }

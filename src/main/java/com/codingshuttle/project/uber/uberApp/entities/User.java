@@ -1,6 +1,7 @@
 package com.codingshuttle.project.uber.uberApp.entities;
 
 import com.codingshuttle.project.uber.uberApp.entities.enums.Role;
+import com.codingshuttle.project.uber.uberApp.entities.enums.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,17 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @Enumerated(EnumType.STRING)
+    private SubscriptionType subscriptionType;
+
+    private int getSessionLimit(){
+        return switch (subscriptionType){
+            case FREE -> 1;
+            case BASIC -> 2;
+            case PREMIUM -> 3;
+        };
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
