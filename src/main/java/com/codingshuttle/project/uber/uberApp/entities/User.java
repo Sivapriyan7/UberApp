@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private SubscriptionType subscriptionType;
 
-    private int getSessionLimit(){
+    public int getSessionLimit(){
         return switch (subscriptionType){
             case FREE -> 1;
             case BASIC -> 2;
