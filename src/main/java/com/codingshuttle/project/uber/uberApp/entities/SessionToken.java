@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -25,6 +26,6 @@ public class SessionToken {
     private User user;
 
     @Column(nullable = false)
-    private Instant expiryTime;
+    private Date expiryDate;
 
 }

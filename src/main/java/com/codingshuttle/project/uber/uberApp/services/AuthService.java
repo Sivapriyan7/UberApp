@@ -13,6 +13,7 @@ public interface AuthService {
 
     DriverDto onboardNewDriver(Long userId, String vehicleId);
 
+    void logout(String token);
 
     String refreshToken(String refreshToken);
 }

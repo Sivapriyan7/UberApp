@@ -51,7 +51,19 @@ public class JWTService {
                 .parseSignedClaims(token)
                 .getPayload();
 
+        Date expirationDate = claims.getExpiration();
+
         return  Long.valueOf(claims.getSubject());
+    }
+
+    public Date getExpirationDateFromToken(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.getExpiration();
     }
 
 }

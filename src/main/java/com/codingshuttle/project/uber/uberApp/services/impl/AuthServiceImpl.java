@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Set;
 
 @Service
@@ -36,6 +37,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final SessionService sessionService;
+
 
     @Override
     public String[] login(String email, String password) {
@@ -48,6 +51,11 @@ public class AuthServiceImpl implements AuthService {
 
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
+
+        Date expirationDate = jwtService.getExpirationDateFromToken(refreshToken);
+        //CREATING USER SESSION
+        sessionService.createSession(user, refreshToken, expirationDate);
+
 
         return new String[] {accessToken,refreshToken};
 
@@ -88,6 +96,11 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
         Driver savedDriver = driverService.createNewDriver(createdDriver);
         return modelMapper.map(savedDriver, DriverDto.class);
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        sessionService.removeSession(refreshToken);
     }
 
     @Override
