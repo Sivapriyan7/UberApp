@@ -6,6 +6,7 @@ import com.codingshuttle.project.uber.uberApp.dto.SignupDto;
 import com.codingshuttle.project.uber.uberApp.dto.UserDto;
 import com.codingshuttle.project.uber.uberApp.entities.Driver;
 import com.codingshuttle.project.uber.uberApp.entities.User;
+import com.codingshuttle.project.uber.uberApp.entities.Vehicle;
 import com.codingshuttle.project.uber.uberApp.entities.enums.Role;
 import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.codingshuttle.project.uber.uberApp.exceptions.RuntimeConflictException;
@@ -81,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public DriverDto onboardNewDriver(Long userId, String vehicleId) {
+    public DriverDto onboardNewDriver(Long userId, Vehicle vehicle) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id : "+userId));
 
         if(user.getRoles().contains(Role.DRIVER)) throw new RuntimeConflictException("User with id "+userId+"is already a Driver");
@@ -89,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
         Driver createdDriver = Driver.builder()
                 .user(user)
                 .rating(0.0)
-                .vehicleId(vehicleId)
+                .vehicle(vehicle)
                 .available(true)
                 .build();
         user.getRoles().add(Role.DRIVER);

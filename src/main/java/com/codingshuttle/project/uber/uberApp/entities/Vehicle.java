@@ -29,7 +29,7 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     VehicleType vehicleType;
 
-    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JsonIgnoreProperties("vehicle")
     Driver driver;
 

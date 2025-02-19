@@ -1,18 +1,18 @@
-package com.codingshuttle.project.uber.uberApp.services;
+package com.codingshuttle.project.uber.uberApp.services.impl;
 
 import com.codingshuttle.project.uber.uberApp.entities.Payment;
 import com.codingshuttle.project.uber.uberApp.entities.Ride;
 import com.codingshuttle.project.uber.uberApp.entities.enums.PaymentStatus;
 import com.codingshuttle.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.codingshuttle.project.uber.uberApp.repositories.PaymentRepository;
+import com.codingshuttle.project.uber.uberApp.services.PaymentService;
 import com.codingshuttle.project.uber.uberApp.strategies.PaymentStrategyManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentServiceImpl implements PaymentService{
+public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentStrategyManager paymentStrategyManager;

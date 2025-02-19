@@ -27,6 +27,7 @@ public class Driver {
 
     private Boolean available;
 
+
     @OneToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", unique = true)
     private Vehicle vehicle;

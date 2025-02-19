@@ -40,7 +40,7 @@ public class AuthController {
     ResponseEntity<DriverDto> onBoardNewDriver(@PathVariable Long userId, @RequestBody OnboardDriverDto onboardDriverDto)
     {
         return new ResponseEntity<>(authService.onboardNewDriver(userId,
-                onboardDriverDto.getVehicleId()),HttpStatus.CREATED);
+                onboardDriverDto.getVehicle()),HttpStatus.CREATED);
     }
 
     @PostMapping("/login")

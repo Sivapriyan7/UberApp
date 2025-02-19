@@ -4,6 +4,7 @@ import com.codingshuttle.project.uber.uberApp.dto.DriverDto;
 import com.codingshuttle.project.uber.uberApp.dto.LoginResponseDto;
 import com.codingshuttle.project.uber.uberApp.dto.SignupDto;
 import com.codingshuttle.project.uber.uberApp.dto.UserDto;
+import com.codingshuttle.project.uber.uberApp.entities.Vehicle;
 
 public interface AuthService {
 
@@ -11,7 +12,7 @@ public interface AuthService {
 
     UserDto signup(SignupDto signupDto);
 
-    DriverDto onboardNewDriver(Long userId, String vehicleId);
+    DriverDto onboardNewDriver(Long userId, Vehicle vehicle);
 
     void logout(String token);
 
